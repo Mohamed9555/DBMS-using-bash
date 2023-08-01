@@ -1,7 +1,7 @@
 #!/bin/bash
 
-special_charcters_regex= # anychar that's not matching the following pattern 
-
+original_ps3="$PS3"
+# echo $original_ps3
 
 while true
 do
@@ -36,17 +36,18 @@ do
             break
         else
             echo "Database already exists"
+            PS3="choose one of the following: "
             select option in "Connect" "Try another name" "Quit"
             do
                 case "$option" in
                     "Connect")
-                        # run connect.sh
+                    # run connect.sh
                     ;;
                     "Try another name")
                         break
                     ;;
                     "Quit")
-                        echo "GoodBye"
+                        echo "GoodBye!"
                         exit 0
                     ;;
                     *)
@@ -58,3 +59,4 @@ do
     fi
 done
 
+PS3=$original_ps3
