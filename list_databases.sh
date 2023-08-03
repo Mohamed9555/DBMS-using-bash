@@ -7,10 +7,10 @@ then
     read -p "Would you like to connect any database Y/N: " connection
     if [ $connection = "y" ] || [ $connection = "Y" ]
     then
-    PS3="Enter the number of the database you want to select: "
+    PS3="Choose Database: "
         select database in "${dirs[@]%/}" 
         do
-            if [ -n "$database" ] 
+            if [ -n "$database" ] # check the number 
             then
                 cd $database
                 # echo $PWD
