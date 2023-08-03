@@ -11,3 +11,12 @@ menu ---> createdb >>> createdb.sh
 4) listdb.sh >>> ls -lf dbs_dir >>> maybe output count so if it's zero we echo no databases found 
 5) dropdb.sh >>> rmdir dbname (make sure that database exists)
 6) connectdb >>> make sure db exists >>> if exists u get another menu which is tablemenu >>> tablemenu.sh 
+
+
+7) I think first need to agree on the format of the table and how it's stored ---> /etc/passwd? or there's a better way 
+                                                                              ---> two files on one file ---> two files 
+
+8) table menu option would appear from connect to database script table menu    ---> createtable 
+                                                                                ---> Insert 
+                                                                                ---> update 
+                                                                                ---> drop 
