@@ -1,9 +1,11 @@
 #!/bin/bash
 
 dirs=($(ls -F | grep /))
-if [ ! -n "$1" ]
+
+
+if [ ${#dirs[@]} != 0 ]
 then
-    echo "Available Databases: ${dirs[@]%/} "
+    echo "Available Databases: ${dirs[@]%/} " # % removes / from the end of the array elements 
     read -p "Would you like to connect any database Y/N: " connection
     if [ $connection = "y" ] || [ $connection = "Y" ]
     then
@@ -20,21 +22,9 @@ then
             fi
         done
     fi
+else
+    echo "No databases found"
 fi
 
 
-# this might be used in the connect_to_database script
-if [ -n "$1" ]
-then
-    PS3="Enter the number of the database you want to select: "
-    select database in "${dirs[@]%/}" 
-    do
-        if [ -n "$database" ] 
-        then
-            echo "hello"
-            break
-        else
-            echo "Invalid option"
-        fi
-    done
-fi
+
