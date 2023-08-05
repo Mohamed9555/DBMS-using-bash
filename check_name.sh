@@ -7,7 +7,7 @@ check_database_name() {
     local max_length=30
 
 
-    if [[ $db_name =~ [^a-zA-Z0-9_]*$ ]];
+    if [[ $db_name =~ [^a-zA-Z0-9_] ]];
     then
         echo "Invalid Naming, Database name can't contain special characters, Please try again "
         return 0
