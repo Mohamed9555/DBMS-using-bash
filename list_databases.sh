@@ -9,22 +9,12 @@ then
     read -p "Would you like to connect any database Y/N: " connection
     if [ $connection = "y" ] || [ $connection = "Y" ]
     then
-    PS3="Choose Database: "
-        select database in "${dirs[@]%/}" 
-        do
-            if [ -n "$database" ] # check the number 
-            then
-                cd $database
-                # echo $PWD
-                break
-            else
-                echo "Invalid option"
-            fi
-        done
+        bash ../connect_to_database.sh           
+    else
+        exit 0
     fi
 else
     echo "No databases found"
 fi
-
 
 
