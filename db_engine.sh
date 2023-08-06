@@ -7,6 +7,7 @@ then
 fi
 # change to the databases directory
 cd databases 
+
 # echo $PWD
 
 
