@@ -16,6 +16,13 @@ do
             then 
                 echo "Creating database ..."
                 mkdir $db_name
+                read -p "Would you like to add a password? (Y/N)" CONFIRM
+                if [ "$CONFIRM" = "y"  ]
+                then
+                    read -s -p "Enter database password: " db_password
+                    echo # just a line break
+                    echo $db_password > "$db_name"/"$db_name"_password.txt
+                fi
                 break
             else
                 echo "Database already exists"
