@@ -6,7 +6,7 @@ do
     then
         cd $database
         # table menu 
-        options=("Create Table" "Drop Table" "List Tables" "Update Table" "Select from Table" "Delete From Table" "Quit")
+        options=("Create Table" "Drop Table" "List Tables" "Insert into Table" "Update Table" "Select from Table" "Delete From Table" "Quit")
         select option in "${options[@]}" 
         do
             case "$option" in
@@ -16,19 +16,25 @@ do
                     ;;
                 "Drop Table")
                     export PS3="Choose Table: "
-                    bash ../drop_Table.sh
+                    bash ../../drop_table.sh
                     PS3=$original_ps3
                     break
                     ;;
                 "List Tables")
                     export PS3="Choose Table: "
-                    bash ../list_Tables.sh
+                    bash ../../list_tables.sh
                     PS3=$original_ps3
                     break
                     ;;
+                "Insert into Table") 
+                    export PS3="Choose Table: "
+                    bash ../../insert.sh
+                    PS3=$original_ps3
+                    break
+                    ;;    
                 "Update Table") 
                     export PS3="Choose Table: "
-                    bash ../connect_to_Table.sh
+                    bash ../../connect_to_table.sh
                     PS3=$original_ps3
                     break
                     ;;
@@ -58,3 +64,21 @@ do
         echo "Invalid option"
     fi
 done
+
+
+# might be used with functions script
+# export PS3="choose one of the following: "
+# dirs=($(ls -F | grep /))
+# source ../functions.sh
+# select database in "${dirs[@]%/}" 
+# do
+#     if [ -n "$database" ] 
+#     then
+#         cd $database
+#         connect_options
+#         # table menu         
+#         break
+#     else
+#         echo "Invalid option"
+#     fi
+# done

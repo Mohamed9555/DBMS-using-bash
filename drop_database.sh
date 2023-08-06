@@ -7,7 +7,7 @@ select database in "${dirs[@]%/}"
 do
     if [ -n "$database" ] 
     then
-        rmdir $database
+        rmdir -R $database
         echo "$database database deleted"
         break
     else

@@ -1,7 +1,5 @@
 #!bin/bash
 
-
-
 tables=($(ls -F | grep -v /)) # not ending with /
 
 
@@ -12,7 +10,7 @@ then
     if [ $show = "y" ] || [ $show = "Y" ]
     then
     PS3="Choose table: "
-        select table in "${tables[@]%/}" 
+        select table in "${tables[@]}" 
         do
             if [ -n "$table" ] # check the number 
             then
