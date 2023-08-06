@@ -7,9 +7,16 @@ select database in "${dirs[@]%/}"
 do
     if [ -n "$database" ] 
     then
-        rmdir -R $database
-        echo "$database database deleted"
-        break
+        echo "You want to delete database: $database" 
+        read -p "Are you sure? (y/n): " CONFIRM
+        if [ "$CONFIRM" = "y" ]
+        then
+            rm -rf $database # force delete write protected files without confirm 
+            echo "$database database deleted"
+            break
+        else
+            break
+        fi
     else
         echo "Invalid option"
     fi
