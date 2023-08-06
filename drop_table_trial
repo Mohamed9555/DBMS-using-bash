@@ -2,8 +2,8 @@
 
 #Ask the user for inputs (DB name, table name, user name, user password)
 
-read -p "Enter user name: " #user_name
-read -p "Enter user Password: " #user_passwd  --> hide the password
+read -p "Enter user name: $user_name" 
+read -p "Enter user Password: [hidden]" $user_passwd  --> hide the password # check if the user password is right/wrong
 
 read -p "Enter database name: " #DB_name
 read -p "Enter table name: " #DB_table
@@ -11,9 +11,9 @@ read -p "Enter table name: " #DB_table
 #let the user confirm before delete
 
 echo "You want to delete table: #$table_name" 
-read -p "Continue? (y/n): " Confirm
+read -p "Continue? (y/n): " CONFIRM
 
-if ['$Confirm'!= "y"];
+if ['$CONFIRM'!= "y"];
 then
     echo "keep the script" #check this part again
     exit 1
