@@ -4,6 +4,7 @@
 
 read -p "Enter user name: $user_name" 
 read -p "Enter user Password: [hidden]" $user_passwd  --> hide the password # check if the user password is right/wrong
+#read -s -p "Enter database password: " DB_PASSWORD
 
 read -p "Enter database name: " #DB_name
 read -p "Enter table name: " #DB_table
