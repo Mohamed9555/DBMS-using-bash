@@ -1,11 +1,12 @@
 #!/bin/bash
 source ../check_name.sh
-
+source ../functions.sh
 
 while true
 do
     flag=1
     read -p "Enter database name: " db_name
+    db_name=$(to_lower "$db_name")
     check_database_name "$db_name"
     if [ $? -eq 1 ]
     then
@@ -17,6 +18,7 @@ do
                 echo "Creating database ..."
                 mkdir $db_name
                 read -p "Would you like to add a password? (Y/N)" CONFIRM
+                CONFIRM=$(to_lower "$CONFIRM")
                 if [ "$CONFIRM" = "y"  ]
                 then
                     read -s -p "Enter database password: " db_password

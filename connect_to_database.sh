@@ -1,34 +1,11 @@
+source ../functions.sh
 export PS3="choose one of the following: "
 dirs=($(ls -F | grep /))
 select database in "${dirs[@]%/}" 
 do
     if [ -n "$database" ] 
     then
-        if [ -f "$database"/"$database"_password.txt ]
-        then
-            max_tries=3
-            remaining_tries=$max_tries
-            stored_password=$(cat "$database"/"$database"_password.txt)
-            while true
-            do
-                if [ $remaining_tries -eq 0 ]
-                then
-                    echo "Exiting .."
-                    exit 1
-                fi
-                read -s -p "Enter password: " entered_password
-                echo # line break
-                # echo $entered_password $stored_password
-                if [ "$entered_password" == "$stored_password" ] 
-                then
-                    break    
-                else 
-                    remaining_tries=$((remaining_tries-1))
-                    echo $remaining_tries
-                    echo "incorrect password, you have $remaining_tries remaining tries" 
-                fi
-            done
-        fi
+        check_password "$database"
         cd $database
         # table menu 
         options=("Create Table" "Drop Table" "List Tables" "Insert into Table" "Update Table" "Select from Table" "Delete From Table" "Quit")
