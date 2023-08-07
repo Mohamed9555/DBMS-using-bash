@@ -23,7 +23,7 @@ do
                 then
                     read -s -p "Enter database password: " db_password
                     echo # just a line break
-                    echo $db_password > "$db_name"/"$db_name"_password.txt
+                    echo $db_password > "$db_name"/."$db_name"_password.txt
                 fi
                 break
             else
