@@ -60,7 +60,7 @@ while true; do
                         ;;
                     "Select from Table")
                         export PS3="Choose Table: "
-                        # select from table script
+                        bash ../../select_from_table.sh
                         PS3="Choose one of the following: "
                         ;;
                     "Delete From Table")
