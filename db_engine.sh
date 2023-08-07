@@ -1,50 +1,46 @@
 #!/bin/bash
 
 # Create database directory if not exist 
-if [ ! -d "databases" ]
-then
+if [ ! -d "databases" ]; then
     mkdir databases 
 fi
 # change to the databases directory
 cd databases 
-# echo $PWD
 
-
-YELLOW='\033[1;33m'
-RESET='\033[0m'
-
-echo -e "${YELLOW}Welcome to My Database Management Script (DBMS)!"
-echo -e "${RESET}You can choose from the following options:"
-
+echo  "Welcome to My Database Management Script (DBMS)!"
 
 options=("Create Database" "Drop Database" "List Databases" "Connect to Database" "Quit")
-PS3="Enter the number of database operation: "
-original_ps3=$PS3
+option_number=1
 
-select option in "${options[@]}" 
-do
-    case "$option" in
-        "Create Database")
-            export PS3="choose one of the following: "
+while true; do
+    echo "Main Menu:"
+    for option in "${options[@]}"; do
+        echo "     $option_number. $option"
+        ((option_number++))
+    done
+    option_number=1
+
+    echo ""
+    read -p "Enter the number of database operation: " choice
+
+    case "$choice" in
+        1)
+            export PS3="Choose one of the following: "
             bash ../create_database.sh
-            PS3=$original_ps3
             ;;
-        "Drop Database")
+        2)
             export PS3="Choose Database: "
             bash ../drop_database.sh
-            PS3=$original_ps3
             ;;
-        "List Databases")
+        3)
             export PS3="Choose Database: "
             bash ../list_databases.sh
-            PS3=$original_ps3
             ;;
-        "Connect to Database") 
+        4)
             export PS3="Choose Database: "
             bash ../connect_to_database.sh
-            PS3=$original_ps3
             ;;
-        "Quit")
+        5)
             echo "Goodbye!" 
             exit 0
             ;;
@@ -52,4 +48,6 @@ do
             echo "Invalid option, please try again"
             ;;
     esac
-done 
+
+    echo ""
+done

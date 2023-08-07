@@ -1,86 +1,91 @@
+#!/bin/bash
+
 source ../functions.sh
-export PS3="choose one of the following: "
+export PS3="Choose one of the following: "
 dirs=($(ls -F | grep /))
-select database in "${dirs[@]%/}" 
-do
-    if [ -n "$database" ] 
-    then
+
+while true; do
+    echo "Avaialabe databases:"
+    for ((i = 0; i < ${#dirs[@]}; i++)); do
+        echo "  $((i + 1)). ${dirs[i]%/}"
+    done
+
+    echo ""
+    read -p "Enter the number of the database: " choice
+
+    if [[ "$choice" -ge 1 && "$choice" -le ${#dirs[@]} ]]; then
+        index=$((choice - 1))
+        database="${dirs[index]%/}"
         check_password "$database"
-        cd $database
-        # table menu 
+        cd "$database"
+
+        # Table menu
         options=("Create Table" "Drop Table" "List Tables" "Insert into Table" "Update Table" "Select from Table" "Delete From Table" "Quit")
-        select option in "${options[@]}" 
-        do
-            case "$option" in
-                "Create Table")
-                    bash ../../create_table.sh
-                    break
-                    ;;
-                "Drop Table")
-                    export PS3="Choose Table: "
-                    bash ../../drop_table.sh
-                    PS3=$original_ps3
-                    break
-                    ;;
-                "List Tables")
-                    export PS3="Choose Table: "
-                    bash ../../list_tables.sh
-                    PS3=$original_ps3
-                    break
-                    ;;
-                "Insert into Table") 
-                    export PS3="Choose Table: "
-                    bash ../../insert.sh
-                    PS3=$original_ps3
-                    break
-                    ;;    
-                "Update Table") 
-                    export PS3="Choose Table: "
-                    bash ../../connect_to_table.sh
-                    PS3=$original_ps3
-                    break
-                    ;;
-                "Select From Table") 
-                    export PS3="Choose Table: "
-                    # select from table script
-                    PS3=$original_ps3
-                    break
-                    ;;
-                "Delete From Table") 
-                    export PS3="Choose Table: "
-                    # Delete from table script
-                    PS3=$original_ps3
-                    break
-                    ;;
-                "Quit")
-                    echo "Goodbye!" 
-                    exit 0
-                    ;;
-                *)
-                    echo "Invalid option, please try again"
-                    ;;
-            esac
+
+        while true; do
+            echo "options for Database $database"
+            for ((i = 0; i < ${#options[@]}; i++)); do
+                echo "  $((i + 1)). ${options[i]}"
+            done
+
+            echo ""
+            read -p "Enter the number of table operation: " table_choice
+
+            if [[ "$table_choice" -ge 1 && "$table_choice" -le ${#options[@]} ]]; then
+                table_index=$((table_choice - 1))
+
+                case "${options[table_index]}" in
+                    "Create Table")
+                        bash ../../create_table.sh
+                        ;;
+                    "Drop Table")
+                        export PS3="Choose Table: "
+                        bash ../../drop_table.sh
+                        PS3="Choose one of the following: "
+                        ;;
+                    "List Tables")
+                        export PS3="Choose Table: "
+                        bash ../../list_tables.sh
+                        PS3="Choose one of the following: "
+                        ;;
+                    "Insert into Table")
+                        export PS3="Choose Table: "
+                        bash ../../insert.sh
+                        PS3="Choose one of the following: "
+                        ;;
+                    "Update Table")
+                        export PS3="Choose Table: "
+                        bash ../../connect_to_table.sh
+                        PS3="Choose one of the following: "
+                        ;;
+                    "Select from Table")
+                        export PS3="Choose Table: "
+                        # select from table script
+                        PS3="Choose one of the following: "
+                        ;;
+                    "Delete From Table")
+                        export PS3="Choose Table: "
+                        # Delete from table script
+                        PS3="Choose one of the following: "
+                        ;;
+                    "Quit")
+                        echo "Goodbye!"
+                        exit 0
+                        ;;
+                    *)
+                        echo "Invalid option, please try again"
+                        ;;
+                esac
+            else
+                echo "Invalid table option, please try again"
+            fi
+
+            echo ""
         done
-        break
+
     else
-        echo "Invalid option"
+        echo "Invalid database number, please try again"
     fi
+
+    echo ""
 done
-
-
-# might be used with functions script
-# export PS3="choose one of the following: "
-# dirs=($(ls -F | grep /))
-# source ../functions.sh
-# select database in "${dirs[@]%/}" 
-# do
-#     if [ -n "$database" ] 
-#     then
-#         cd $database
-#         connect_options
-#         # table menu         
-#         break
-#     else
-#         echo "Invalid option"
-#     fi
-# done
