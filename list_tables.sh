@@ -1,6 +1,6 @@
 #!bin/bash
 
-tables=($(ls -F | grep -v /)) # not ending with /
+tables=($(ls -F | grep -v "_metadata.txt" | sed 's/\.txt$//')) # sub .txt at the end of the line with nothing 
 
 
 if [ ${#tables[@]} != 0 ]
@@ -14,7 +14,7 @@ then
         do
             if [ -n "$table" ] # check the number 
             then
-                cat $table
+                cat "$table".txt
                 # echo $PWD
                 break
             else
