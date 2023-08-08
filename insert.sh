@@ -24,7 +24,7 @@ do
     fi
 done
 
-echo "table columns"
+echo "table columns:"
 
 meta_type=$(sed -n '1p' "$table_meta") # first line has the type 
 meta_name=$(sed -n '2p' "$table_meta") # second line has the name 
@@ -37,16 +37,31 @@ IFS=':' read -ra columns_names <<< "$meta_name"
 for ((i = 0; i < ${#columns_names[@]}; i++)); do
     col="${columns_names[i]}"
     type="${columns_types[i]}"
-    echo "  $col ($type)"
+    echo "       $col ($type)"
 done
 
 # Display existing data
 echo -e "\nExisting data in the table:"
 
 # Print header with column names
-echo $(make_header "${columns_names[@]}")
-cat $table_data
+header=""
+for ((i = 0; i < ${#columns_names[@]}; i++)); do
+    col="${columns_names[i]}"
+    if [ "$i" -eq 0 ]; then
+        header+="$col"
+    else
+        header+=":$col"
+    fi
+done
 
+if [ -s $table_data ]
+then
+    echo "$header"
+    cat $table_data
+else
+    echo "$header"
+    echo "No data yet"
+fi
 # Prompt for data input for each column
 data=""
 for ((i = 0; i < ${#columns_names[@]}; i++)); do
