@@ -24,7 +24,7 @@ do
     fi
 done
 
-echo "table columns:"
+echo "Table Columns:"
 
 meta_type=$(sed -n '1p' "$table_meta") # first line has the type 
 meta_name=$(sed -n '2p' "$table_meta") # second line has the name 
@@ -70,7 +70,14 @@ for ((i = 0; i < ${#columns_names[@]}; i++)); do
     while true; do
         read -p "Enter value for $col ($type): " value
         # Perform type checking
-        if [ "$type" == "int" ] && ! [[ "$value" =~ ^[0-9]+$ ]]; then
+         if [ -z "$value" ] && [ $i -eq 0 ]   # <<<<<<<< look here for null input for primary key
+        then
+            echo "Invalid input, primary key can't have null"
+        elif [ -z "$value" ] 
+        then
+            value="NULL"
+            break
+        elif [ "$type" == "int" ] && ! [[ "$value" =~ ^[0-9]+$ ]]; then
             echo "Invalid input. Please enter an integer."
         else [ "$type" == "string" ]
             # No need for type checking, strings are accepted
@@ -89,7 +96,11 @@ for ((i = 0; i < ${#columns_names[@]}; i++)); do
                 read -p "Enter a new value for $col: " value
             fi
         done
-        fi
+    fi
+    # elif [ "$i" == "0" ] && [ -z "$value" ] 
+    # then
+    #     echo "here"
+    # fi
 data+=":$value"
 done
 # Remove the leading colon from the data
