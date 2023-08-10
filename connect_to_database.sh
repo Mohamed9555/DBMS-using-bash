@@ -55,7 +55,7 @@ while true; do
                         ;;
                     "Update Table")
                         export PS3="Choose Table: "
-                        bash ../../connect_to_table.sh
+                        bash ../../update_table.sh
                         PS3="Choose one of the following: "
                         ;;
                     "Select from Table")
@@ -65,7 +65,7 @@ while true; do
                         ;;
                     "Delete From Table")
                         export PS3="Choose Table: "
-                        # Delete from table script
+                        bash ../../delete_from_table.sh
                         PS3="Choose one of the following: "
                         ;;
                     "Quit")
