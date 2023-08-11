@@ -1,12 +1,13 @@
 #/bin/bash
 source ../../check_name.sh
-
+source ../../functions.sh
 meta_file=
 data_file=
 
 while true # check if exists and naming 
 do
     read -p "Enter table name: " table
+    table=$(to_lower "$table")
     meta_file=""$table"_metadata.txt"
     data_file="$table".txt
     if [ ! -f "$data_file" ] || [ ! -f "$meta_file" ] # check if exists
@@ -51,6 +52,7 @@ do
     check_column_name "$primary_name"
     if [ $? -eq 1 ]
     then
+        primary_name=$(to_lower "$primary_name")
         break
     fi
 done
@@ -85,6 +87,7 @@ do
         check_column_name "$column_name"
         if [ $? -eq 1 ]
         then
+            column_name=$(to_lower "$column_name")
             break
         fi
     done
