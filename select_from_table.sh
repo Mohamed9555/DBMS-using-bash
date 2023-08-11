@@ -33,7 +33,7 @@ then
         CONFIRM=$(to_lower "$CONFIRM")
         if [ "$CONFIRM" = "y" ] 
         then
-            bash ../../insert.sh ### <<<<< a 2li ha7sel b3d insert
+            bash ../../insert.sh 
             break
         elif [ "$CONFIRM" = "n" ]
         then
@@ -48,7 +48,7 @@ fi
 meta_type=$(sed -n '1p' "$table_meta")
 meta_name=$(sed -n '2p' "$table_meta")
 
-IFS=':' read -a columns_types <<< "$meta_type" # <<<< IFS  why -r ?
+IFS=':' read -a columns_types <<< "$meta_type" # <<<< IFS  
 IFS=':' read -a columns_names <<< "$meta_name" # <<<< IFS 
 
 echo "Table Columns:"
@@ -70,28 +70,21 @@ for ((i = 0; i < ${#columns_names[@]}; i++)); do
     if [ "$i" -eq 0 ]; then
         header="$col" # try this later (c1  :   c2) #  (    :   c1  :   c2)
     else
-        header+="\t:$col"
+        header+=":$col"
     fi
 done
 
-# if [ -s $table_data ]
-# then
-#     echo "$header"
-#     # cat $table_data
-# else
-#     echo "$header"
-#     echo "No data yet"
-# fi
 
 PS3="Select filtering option: "
 options=("all" "Where" "By Column")
 select option in "${options[@]}"; do
     case "$option" in
         "all")
-            awk -F: -v OFS="\t:" -v header="\n$header" 'BEGIN { print header; 
+            awk -F: -v OFS=":" -v header="\n$header" 'BEGIN { print header; 
             print "------------------------------------------------------------------------------------------------------"
             } 
             { $1=$1; print }' "$table_data" # used to reformat the line 
+            sleep 2
             break
             ;;
         "Where")
@@ -103,11 +96,11 @@ select option in "${options[@]}"; do
                     read -p "Enter value for condition: " condition_value
                     # Read the data file and filter rows based on the condition
                     awk -v col_index="$condition_column_index" -v col_value="$condition_value" \
-                        -v header="\n$header" -v OFS="\t:" -F: '
+                        -v header="\n$header" -F: '
                             BEGIN { print header; 
                                     print "------------------------------------------------------------------------------------------------------"
                                     }
-                            { $1=$1;
+                            { 
                             if ($(col_index) == col_value) print;
                             
                         }' "$table_data"
@@ -116,6 +109,7 @@ select option in "${options[@]}"; do
                     echo "Invalid column"
                 fi
             done
+            sleep 2
             break
             ;;
         "By Column")
@@ -125,12 +119,16 @@ select option in "${options[@]}"; do
                     # Print only the selected column
                     column_index=$REPLY
                     # Print the selected column
+                    echo -e "\n"
+                    echo "$display_column"
+                    echo "------------------------"
                     cut -d':' -f "$((column_index))" "$table_data"
                     break
                 else
                     echo "Invalid column"
                 fi
             done
+            sleep 2
             break
             ;;
         *)

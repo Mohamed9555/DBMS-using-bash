@@ -1,6 +1,5 @@
 #!/bin/bash
 original_ps3="$PS3"
-source ../check_name.sh
 source ../functions.sh
 dirs=($(ls -F | grep /))
 

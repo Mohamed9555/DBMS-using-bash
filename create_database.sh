@@ -1,5 +1,4 @@
 #!/bin/bash
-source ../check_name.sh
 source ../functions.sh
 
 while true
@@ -7,7 +6,7 @@ do
     flag=1
     read -p "Enter database name: " db_name
     db_name=$(to_lower "$db_name")
-    check_database_name "$db_name"
+    check_name "$db_name"
     if [ $? -eq 1 ]
     then
         if [ $flag -eq 1 ]
@@ -33,7 +32,7 @@ do
                 do
                     case "$option" in
                         "Connect")
-                        # run connect.sh
+                        source ../connect_to_database.sh
                         ;;
                         "Try another name")
                             break

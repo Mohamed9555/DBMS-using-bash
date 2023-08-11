@@ -1,5 +1,5 @@
 #!/bin/bash
-# source ../check_name.sh
+source ../../functions.sh
 tables=($(ls -F | grep -v "_metadata.txt" | sed 's/\.txt$//')) # sub .txt at the end of the line with nothing 
 
 
@@ -29,11 +29,3 @@ fi
 
 
 
-# might use functions lateer 
-
-# #!/bin/bash
-# original_ps3="$PS3"
-# # source ../check_name.sh
-# source ../../functions.sh
-# remove_table
-# PS3=$original_ps3

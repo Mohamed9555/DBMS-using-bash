@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ../functions.sh
+
 dirs=($(ls -F | grep /))
 
 

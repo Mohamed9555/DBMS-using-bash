@@ -5,6 +5,7 @@ tables=($(ls -F | grep -v "_metadata.txt" | sed 's/\.txt$//')) # sub .txt at the
 
 if [ ${#tables[@]} -eq 0 ]; then
     echo "No tables were found."
+    sleep 2
     exit 1
 fi
 
@@ -39,6 +40,8 @@ for ((i = 0; i < ${#columns_names[@]}; i++)); do
     type="${columns_types[i]}"
     echo "       $col ($type)"
 done
+
+sleep 2
 
 # Display existing data
 echo -e "\nExisting data in the table:"

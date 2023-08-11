@@ -33,7 +33,7 @@ then
         CONFIRM=$(to_lower "$CONFIRM")
         if [ "$CONFIRM" = "y" ] 
         then
-            bash ../../insert.sh ### <<<<< a 2li ha7sel b3d insert
+            bash ../../insert.sh 
             break
         elif [ "$CONFIRM" = "n" ]
         then
@@ -48,7 +48,7 @@ fi
 meta_type=$(sed -n '1p' "$table_meta")
 meta_name=$(sed -n '2p' "$table_meta")
 
-IFS=':' read -a columns_types <<< "$meta_type" # <<<< IFS  why -r ?
+IFS=':' read -a columns_types <<< "$meta_type" # <<<< IFS  
 IFS=':' read -a columns_names <<< "$meta_name" # <<<< IFS 
 
 echo "Table Columns:"
@@ -74,14 +74,6 @@ for ((i = 0; i < ${#columns_names[@]}; i++)); do
     fi
 done
 
-# if [ -s $table_data ]
-# then
-#     echo "$header"
-#     # cat $table_data
-# else
-#     echo "$header"
-#     echo "No data yet"
-# fi
 
 PS3="Select filtering option: "
 options=("Where" "By Column")
@@ -93,6 +85,7 @@ select option in "${options[@]}"; do
             select condition_column in "${columns_names[@]}"; do
                 if [ -n "$condition_column" ]; then
                     condition_column_index=$REPLY # saves the input number 
+                    echo ""
                     read -p "Enter value for condition: " condition_value
                     # Read the data file and filter rows based on the condition
                     temp_file=$(mktemp)
@@ -102,10 +95,11 @@ select option in "${options[@]}"; do
                         echo "No records found matching the condition."
                     else
                         # Display the filtered output
-                        echo "Filtered records:"
+                        echo -e "Updated records:\n"
                         cat "$temp_file"
+                        sleep 2
                         mv "$temp_file" "$table_data"
-                        echo "Rows deleted successfully."
+                        echo -e "\nRows deleted successfully."
                     fi
                     break
                 else

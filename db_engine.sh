@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # Create database directory if not exist 
 if [ ! -d "databases" ]; then
     mkdir databases 

@@ -1,5 +1,4 @@
 #/bin/bash
-source ../../check_name.sh
 source ../../functions.sh
 meta_file=
 data_file=
@@ -12,7 +11,7 @@ do
     data_file="$table".txt
     if [ ! -f "$data_file" ] || [ ! -f "$meta_file" ] # check if exists
     then
-        check_table_name "$table"
+        check_name "$table"
         if [ $? -eq 1 ]
         then 
             break
@@ -49,7 +48,7 @@ done
 while true
 do
     read -p "Enter primary key name: " primary_name
-    check_column_name "$primary_name"
+    check_name "$primary_name"
     if [ $? -eq 1 ]
     then
         primary_name=$(to_lower "$primary_name")
@@ -84,7 +83,7 @@ do
     while true
     do
         read -p "Enter column name: " column_name
-        check_column_name "$column_name"
+        check_name "$column_name"
         if [ $? -eq 1 ]
         then
             column_name=$(to_lower "$column_name")
