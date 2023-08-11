@@ -34,72 +34,58 @@ check_name() {
     return 1
 }
 
+show_table_info() {
+    tables=($(ls -F | grep -v "_metadata.txt" | sed 's/\.txt$//')) # sub .txt at the end of the line with nothing 
+    if [ ${#tables[@]} -eq 0 ]; then
+        echo "No tables were found."
+        exit 1
+    fi
+
+    table_data=
+    table_meta=
+    PS3="Choose table: "
+    select table in "${tables[@]}"; do
+        if [ -n "$table" ]; then
+            table_data="$table".txt
+            table_meta="$table"_metadata.txt
+            break
+        else
+            echo "Invalid option"
+        fi
+    done
 
 
+    meta_type=$(sed -n '1p' "$table_meta")
+    meta_name=$(sed -n '2p' "$table_meta")
+
+    IFS=':' read -a columns_types <<< "$meta_type"
+    IFS=':' read -a columns_names <<< "$meta_name"
+
+    echo "Table Columns:"
+
+    for ((i = 0; i < ${#columns_names[@]}; i++)); do
+        col="${columns_names[i]}"
+        type="${columns_types[i]}"
+        echo -e "\t $col ($type)"
+    done
 
 
-
-function connect_options(){
-    options=("Create Table" "Drop Table" "List Tables" "Update Table" "Select from Table" "Delete From Table" "Quit")
-        select option in "${options[@]}" 
-        do
-            case "$option" in
-                "Create Table")
-                    bash ../../create_table.sh
-                    break
-                    ;;
-                "Drop Table")
-                    export PS3="Choose Table: "
-                    bash ../../drop_table.sh
-                    PS3=$original_ps3
-                    break
-                    ;;
-                "List Tables")
-                    export PS3="Choose Table: "
-                    bash ../../list_tables.sh
-                    PS3=$original_ps3
-                    break
-                    ;;
-                "Update Table") 
-                    export PS3="Choose Table: "
-                    bash ../../connect_to_table.sh
-                    PS3=$original_ps3
-                    break
-                    ;;
-                "Select From Table") 
-                    export PS3="Choose Table: "
-                    # select from table script
-                    PS3=$original_ps3
-                    break
-                    ;;
-                "Delete From Table") 
-                    export PS3="Choose Table: "
-                    # Delete from table script
-                    PS3=$original_ps3
-                    break
-                    ;;
-                "Quit")
-                    echo "Goodbye!" 
-                    exit 0
-                    ;;
-                *)
-                    echo "Invalid option, please try again"
-                    ;;
-            esac
-        done
+    # Print header with column names
+    header=""
+    for ((i = 0; i < ${#columns_names[@]}; i++)); do
+        col="${columns_names[i]}"
+        if [ "$i" -eq 0 ]; then
+            header="$col"
+        else
+            header+=":$col"
+        fi
+    done
+    export table_data header columns_names columns_types
 }
 
 
-# function select_database(){
-
-# }
 
 
-
-# function select_table(){
-
-
-# }
 
 
 
@@ -160,62 +146,4 @@ hash_password() {
     local salt=$(openssl rand -hex 16) # Generate a random salt
     local hashed_password=$(echo -n "$password$salt" | sha512sum | awk '{print $1}') #from sha512sum <hash_value>  <file_path>
     echo "$salt:$hashed_password"
-}
-
-
-function read_table() {
-    echo "Avaialabe Tables:"
-    for ((i = 0; i < ${#tables[@]}; i++)); do
-        echo "  $((i + 1)). ${tables[i]%/}"
-    done
-    table=
-    read -p "Enter table choice: " choice
-
-    if [[ "$choice" -ge 1 && "$choice" -le ${#tables[@]} ]]; then
-        index=$((choice - 1))
-        table="${tables[index]%/}"    
-    fi
-    table_data="$table.txt"
-    table_meta="$table"_metadata.txt
-
-
-    meta_type=$(sed -n '1p' "$table_meta")
-    meta_name=$(sed -n '2p' "$table_meta")
-
-    IFS=':' read -ra columns_types <<< "$meta_type"
-    IFS=':' read -ra columns_names <<< "$meta_name"
-
-    # Display available columns for the user to choose
-    echo "Available columns: ${columns_names[*]}"
-
-    # Prompt for column and value for the condition
-    PS3="Select a condition column: "
-    condition_column=
-    select column in "${columns_names[@]}"
-    do
-        if [ -n "$column" ]
-        then
-            condition_column=$column
-            echo "$condition_column"
-            break
-        else
-            echo "Invalid column"
-    fi
-    done
-    # read -p "Enter column name for condition: " condition_column
-    read -p "Enter value for condition: " condition_value
-
-    # Find the index of the condition column in the array
-    condition_column_index=-1
-    for i in "${!columns_names[@]}"; do
-        if [ "${columns_names[i]}" == "$condition_column" ]; then
-            condition_column_index="$i"
-            break
-        fi
-    done
-    if [ "$condition_column_index" == -1 ]; then
-        echo "Invalid column name"
-    fi
-    local return_values=("$condition_column_index" "$condition_value" "$table_data")
-    echo "${return_values[@]}"
 }

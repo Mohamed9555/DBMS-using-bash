@@ -18,7 +18,7 @@ then
             if [ -n "$table" ] # check the number 
             then
                 cat "$table".txt
-                if [ ! -s "$table" ] 
+                if [ ! -s "$table".txt ] 
                 then
                     echo "No data were found"
                 fi

@@ -18,10 +18,7 @@ while true; do
         database="${dirs[index]%/}"
         check_password "$database"
         cd "$database"
-
-        # Table menu
         options=("Create Table" "Drop Table" "List Tables" "Insert into Table" "Update Table" "Select from Table" "Delete From Table" "Quit")
-
         while true; do
             echo "options for Database $database"
             for ((i = 0; i < ${#options[@]}; i++)); do
@@ -55,7 +52,7 @@ while true; do
                         ;;
                     "Update Table")
                         export PS3="Choose Table: "
-                        bash ../../update_table.sh
+                        bash ../../update_table.sh "$temp_file1" "$temp_file2"
                         PS3="Choose one of the following: "
                         ;;
                     "Select from Table")

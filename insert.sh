@@ -1,68 +1,18 @@
 #!bin/bash
 source ../../functions.sh
 
-tables=($(ls -F | grep -v "_metadata.txt" | sed 's/\.txt$//')) # sub .txt at the end of the line with nothing 
-
-if [ ${#tables[@]} -eq 0 ]; then
-    echo "No tables were found."
-    sleep 2
-    exit 1
-fi
-
-table_data=
-table_meta=
-PS3="Choose table: "
-select table in "${tables[@]}" 
-do  
-    if [ -n "$table" ] # check the number
-    then
-        table_data="$table".txt
-        table_meta="$table"_metadata.txt
-        # echo $PWD
-        break
-    else
-        echo "Invalid option"
-    fi
-done
-
-echo "Table Columns:"
-
-meta_type=$(sed -n '1p' "$table_meta") # first line has the type 
-meta_name=$(sed -n '2p' "$table_meta") # second line has the name 
-
-IFS=':' read -ra columns_types <<< "$meta_type"
-IFS=':' read -ra columns_names <<< "$meta_name"
-
-
-# Display columns with names and types
-for ((i = 0; i < ${#columns_names[@]}; i++)); do
-    col="${columns_names[i]}"
-    type="${columns_types[i]}"
-    echo "       $col ($type)"
-done
-
-sleep 2
+show_table_info
 
 # Display existing data
 echo -e "\nExisting data in the table:"
 
 # Print header with column names
-header=""
-for ((i = 0; i < ${#columns_names[@]}; i++)); do
-    col="${columns_names[i]}"
-    if [ "$i" -eq 0 ]; then
-        header+="$col"
-    else
-        header+=":$col"
-    fi
-done
-
 if [ -s $table_data ]
 then
-    echo "$header"
+    echo -e "$header"
     cat $table_data
 else
-    echo "$header"
+    echo -e "$header"
     echo "No data yet"
 fi
 # Prompt for data input for each column
